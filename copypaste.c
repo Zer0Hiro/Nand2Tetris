@@ -3,8 +3,8 @@
 
 int main()
 {
-    for(int i = 0; i < 16; i++)
+    for(int i = 1; i < 16; i++)
     {
-        printf("Not(in=in[%d], out=out[%d]);\n",i,i);
+        printf("FullAdder(a=a[%d], b=b[%d], c=car%d, sum=out[%d], carry=car%d);\n",i,i,i-1,i,i);
     }
 }
