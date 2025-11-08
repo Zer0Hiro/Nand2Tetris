@@ -1,0 +1,14 @@
+/**
+ * Computes the difference of two bits.
+ */
+CHIP FullSub {
+    IN a,b,bIn;
+    OUT diff,bOut;
+
+    PARTS:
+    HalfSub(a=a, b=b, diff=adifb, bOut=bOut1);
+    HalfSub(a=adifb, b=bIn, diff=diff, bOut=bOut2);
+    Or(a=bOut1, b=bOut2, out=bOut);
+
+
+}

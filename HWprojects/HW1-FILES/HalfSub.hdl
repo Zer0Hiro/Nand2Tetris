@@ -1,0 +1,13 @@
+/**
+ * Computes the difference of two bits.
+ */
+CHIP HalfSub {
+    IN a, b;
+    OUT diff, // Difference between a-b
+        bOut; // Borrowed true/false
+
+    PARTS:
+    Xor(a=a, b=b, out=diff);
+    Not(in=a, out=na);
+    And(a=na, b=b, out=bOut);
+}  
