@@ -1,9 +1,10 @@
 /**
- * Computes the difference of two bits.
+ * Computes the difference of three bits.
  */
 CHIP FullSub {
     IN a,b,bIn;
-    OUT diff,bOut;
+    OUT diff, // Difference between a-b-bIn
+        bOut; // Borrowed part
 
     PARTS:
     HalfSub(a=a, b=b, diff=adifb, bOut=bOut1);

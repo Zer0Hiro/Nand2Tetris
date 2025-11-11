@@ -1,0 +1,7 @@
+/**
+ * Computes the difference of three bits.
+ */
+ CHIP AdderSub{
+    IN a, b, control, cln;
+    OUT res, cOut;
+ }
