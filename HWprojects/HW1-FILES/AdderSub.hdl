@@ -1,7 +1,15 @@
 /**
- * Computes the difference of three bits.
+ * AdderSub:
+    if (control == 0) out = a+b+cln, else out = a-b-cln
  */
  CHIP AdderSub{
-    IN a, b, control, cln;
+    IN a, b, control, cIn;
     OUT res, cOut;
+
+    PARTS:
+    FullAdder(a=a, b=b, c=cIn, sum=asumb, carry=abcout);
+    FullSub(a=a, b=b, bIn=cIn, diff=adifb, bOut=abBout);
+    Mux(a=asumb, b=adifb, sel=control, out=res);
+    Mux(a=abcout, b=abBout, sel=control, out=cOut);
+
  }

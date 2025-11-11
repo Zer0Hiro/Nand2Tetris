@@ -1,0 +1,23 @@
+/**
+ * AdderSub:
+    if (control == 0) out = a+b+cln, else out = a-b-cln
+ */
+ CHIP AdderSub8{
+    IN a[8], b[8], control;
+    OUT res[8], cOut, ifZero;
+
+    PARTS:
+   //8 bit sum or diff of a and b (a+-b)
+   AdderSub(a=a[0], b=b[0], control=control, cIn=false, res=res[0], res=r0, cOut=cb1);
+   AdderSub(a=a[1], b=b[1], control=control, cIn=cb1, res=res[1], res=r1, cOut=cb2);
+   AdderSub(a=a[2], b=b[2], control=control, cIn=cb2, res=res[2], res=r2, cOut=cb3);
+   AdderSub(a=a[3], b=b[3], control=control, cIn=cb3, res=res[3], res=r3, cOut=cb4); 
+   AdderSub(a=a[4], b=b[4], control=control, cIn=cb4, res=res[4], res=r4, cOut=cb5); 
+   AdderSub(a=a[5], b=b[5], control=control, cIn=cb5, res=res[5], res=r5, cOut=cb6); 
+   AdderSub(a=a[6], b=b[6], control=control, cIn=cb6, res=res[6], res=r6, cOut=cb7); 
+   AdderSub(a=a[7], b=b[7], control=control, cIn=cb7, res=res[7], res=r7, cOut=cOut);
+   //ifZero check
+   Or8Way(in[0]=r0, in[1]=r1, in[2]=r2, in[3]=r3, in[4]=r4, in[5]=r5, in[6]=r6, in[7]=r7, out=Zero);
+   Not(in=Zero, out=ifZero);
+
+ }
