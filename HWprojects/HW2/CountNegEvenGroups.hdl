@@ -1,0 +1,19 @@
+/**
+ * Divides number on 4 equal sized groups
+ * If any of groups return 1 => out = 1
+ */
+CHIP CountNegEvenGroups {
+    IN in[16];
+    OUT count[3];
+
+    PARTS:
+    IsNegEven4(a=in[0..3] , out=aneg);
+    IsNegEven4(a=in[4..7] , out=bneg);
+    IsNegEven4(a=in[8..11] , out=cneg);
+    IsNegEven4(a=in[12..15] , out=dneg);
+
+    HalfAdder(a=aneg, b=bneg, sum=absum, carry=abcar);
+    HalfAdder(a=cneg, b=dneg, sum=cdsum, carry=cdcar);
+    FullAdder(a=, b=, c=, sum=count[0], carry=);
+
+}

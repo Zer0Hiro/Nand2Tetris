@@ -1,0 +1,12 @@
+/**
+ * if (a%2) && a < 0
+ */
+
+CHIP IsNegEven4 {
+    IN a[4];
+    OUT out;
+
+    PARTS:
+    Not(in=a[0], out=na);
+    And(a=a[3], b=na, out=out);
+}

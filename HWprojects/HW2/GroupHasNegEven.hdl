@@ -1,0 +1,18 @@
+/**
+ * Divides number on 4 equal sized groups
+ * If any of groups return 1 => out = 1
+ */
+CHIP GroupHasNegEven {
+    IN in[16];
+    OUT out;
+
+    PARTS:
+    IsNegEven4(a=in[0..3] , out=zthneg);
+    IsNegEven4(a=in[4..7] , out=fsvneg);
+    IsNegEven4(a=in[8..11] , out=eelneg);
+    IsNegEven4(a=in[12..15] , out=twfifneg);
+
+    Or(a=zthneg, b=fsvneg, out=zorsev);
+    Or(a=eelneg, b=twfifneg, out=eorfif);
+    Or(a=zorsev, b=eorfif, out=out);
+}
