@@ -1,4 +1,4 @@
-/**
+ /**
  * AdderSub:
     if (control == 0) out = a+b+cln, else out = a-b-cln
  */
