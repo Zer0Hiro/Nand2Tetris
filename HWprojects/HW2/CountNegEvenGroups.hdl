@@ -10,11 +10,10 @@ CHIP CountNegEvenGroups {
     IsNegEven4(a=in[8..11] , out=cneg);
     IsNegEven4(a=in[12..15] , out=dneg);
 
-    HalfAdder(a=aneg, b=bneg, sum=fnum, carry=abcar);               // 1 + 1 | 0 | 1
-    HalfAdder(a=cneg, b=dneg, sum=snum, carry=cdcar);               // 1 + 1 | 0 | 1
-    HalfAdder(a=fnum, b=snum, sum=count[0], carry=fscar);           // 0 + 0 | 0 | 0 0
-    FullAdder(a=abcar, b=cdcar, c=fscar, sum=count[1], carry=lcar); // 1 + 1 | 0 | 1 0
-    HalfAdder(a=false, b=lcar, sum=count[2], carry=outc);           // 0 + 1 | 1 | 0 1
+    HalfAdder(a=aneg, b=bneg, sum=fnum, carry=abcar);                   // 1 + 1 | 0 | 1
+    HalfAdder(a=cneg, b=dneg, sum=snum, carry=cdcar);                   // 1 + 1 | 0 | 1
+    HalfAdder(a=fnum, b=snum, sum=count[0], carry=fscar);               // 0 + 0 | 0 | 0 0
+    FullAdder(a=abcar, b=cdcar, c=fscar, sum=count[1], carry=count[2]); // 1 + 1 | 0 | 1 0          // 0 + 1 | 1 | 0 1
 
     // 0 1 1 0
     // 010
