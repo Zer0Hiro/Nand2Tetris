@@ -1,0 +1,43 @@
+CHIP HasNegEvenGroup {
+    IN  
+        x[16], y[16],  // 16-bit inputs        
+        zx, // zero the x input?
+        nx, // negate the x input?
+        zy, // zero the y input?
+        ny, // negate the y input?
+        f,  // compute (out = x + y) or (out = x & y)?
+        no; // negate the out output?
+    OUT 
+        out[16], // 16-bit output
+        zr,      // if (out == 0) equals 1, else 0
+        ng,      // if (out < 0)  equals 1, else 0
+        hasNegEvenGroup;
+
+    PARTS:
+    // x part
+    Mux16(a=x, b=false, sel=zx, out=zxR);
+    Not16(in=zxR, out=zxRN);
+    Mux16(a=zxR, b=zxRN, sel=nx, out=zxNOTR);
+    // y part
+    Mux16(a=y, b=false, sel=zy, out=zyR);
+    Not16(in=zyR, out=zyRN);
+    Mux16(a=zyR, b=zyRN, sel=ny, out=zyNOTR);
+    // choose function
+    Add16(a=zxNOTR, b=zyNOTR, out=xory);
+    And16(a=zxNOTR, b=zyNOTR, out=xandy);
+    Mux16(a=xandy, b=xory, sel=f, out=xFy);
+    // Final not
+    Not16(in=xFy, out=xfyN);
+    Mux16(a=xFy, b=xfyN, sel=no, out=out, out[0..7]=outzr1, out[8..15]=outzr2, out[15]=outng, out=hasneg);
+    //zr
+    Or8Way(in=outzr1, out=zor1);
+    Or8Way(in=outzr2, out=zor2);
+    Or(a=zor1, b=zor2, out=zor);
+    Not(in=zor, out=zr);
+    //no
+    Or(a=outng, b=false, out=ng);
+    //hasNegEvenGroup
+    GroupHasNegEven(in=hasneg, out=hasNegEvenGroup);
+
+
+}
