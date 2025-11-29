@@ -1,7 +1,4 @@
-/**
- * if (a%2) && a < 0
- */
-
+// if (a%2) && a < 0
 CHIP IsNegEven4 {
     IN a[4];
     OUT out;
