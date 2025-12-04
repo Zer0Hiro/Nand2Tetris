@@ -204,6 +204,7 @@ M = D
     D;JEQ
     @counter
     M = 0
+    // Remove previous square
 (CLEAR_OLD_SQUARE)
     @16
     D = A
@@ -226,15 +227,17 @@ M = D
     0;JMP
 (NO_CLEAR)
     @keep_button
-    M = 0
+    M = 0 // Reset space btn
+    // Save new position
     @position
-    D = M
+    D = M 
     @prev_pos
     M = D
     @temp
     D = M
     @position
     M = D
+    // Reset Stack
     @2
     D = A
     @SP
