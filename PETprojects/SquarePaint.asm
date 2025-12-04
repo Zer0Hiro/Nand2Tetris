@@ -54,7 +54,13 @@ M = D
     D = D - A
     @GO_DOWN
     D;JEQ
-
+    //Keep Square
+    @pressed
+    D = M
+    @32
+    D = D - A
+    @PLACE_BS
+    D;JEQ
     @KEY_PRESS_W8
     0;JMP // not equal to arrows
 
@@ -176,14 +182,23 @@ M = D
     @BLACK_SQUARE
     0;JMP
 
-
+(PLACE_BS)
+    @32
+    D = A
+    @keep_button
+    M = D
+    @KEY_RELEASE
+    0;JMP
 
 // RETURN =============================
 
 (RET)
     @temp
     M = D
-    @20496
+    // If space activated
+    @keep_button
+    D = M
+    @32
     D = D - A
     @NO_CLEAR
     D;JEQ
@@ -210,6 +225,8 @@ M = D
     @CLEAR_OLD_SQUARE
     0;JMP
 (NO_CLEAR)
+    @keep_button
+    M = 0
     @position
     D = M
     @prev_pos
