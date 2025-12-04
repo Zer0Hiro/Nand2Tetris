@@ -8,6 +8,7 @@ D = A
 D = D + A
 @position
 M = D
+@prev_pos
 //KBD input
 (KEY_INPUT)
     @KBD
@@ -59,37 +60,72 @@ M = D
     @BLACK_SQUARE
     0;JMP
 
-(GO_LEFT) // <-
-//push y
-    @position
-    D = M
-    //Check first if its first line of screen
-    @16896
-    D = D - A
-    @KEY_INPUT
-    D;JLE
-    //Don't keep pos
-    @511
-    D = A
-    @position
-    M = M - D
-(KEEP)
-    @position
-    D = M
-    @SP
-    AM = M - 1
-    M = D
-    //push RET
-    @RET
-    D = A
-    @SP
-    AM = M - 1
-    M = D
-    @BLACK_SQUARE
-    0;JMP
+// (GO_LEFT) // <-
+// //push y
+//     @position
+//     D = M
+//     //Check first if its first line of screen
+//     @16896
+//     D = D - A
+//     @KEY_INPUT
+//     D;JLE
+//     //Don't keep pos
+//     @511
+//     D = A
+//     @position
+//     M = M - D
+// (KEEP)
+//     @position
+//     D = M
+//     @SP
+//     AM = M - 1
+//     M = D
+//     //push RET
+//     @RET
+//     D = A
+//     @SP
+//     AM = M - 1
+//     M = D
+//     @BLACK_SQUARE
+//     0;JMP
 
 
 (RET)
+    @temp
+    M = D
+    @20496
+    D = D - A
+    @NO_CLEAR
+    D;JEQ
+    @counter
+    M = 0
+(CLEAR_OLD_SQUARE)
+    @16
+    D = A
+    @counter
+    D = M - D
+    @NO_CLEAR
+    D;JEQ
+
+    D = 0
+    @prev_pos
+    A = M
+    M = D
+    @32
+    D = A
+    @prev_pos
+    M = M + D
+    @counter
+    M = M + 1
+    @CLEAR_OLD_SQUARE
+    0;JMP
+(NO_CLEAR)
+    @position
+    D = M
+    @prev_pos
+    M = D
+    @temp
+    D = M
     @position
     M = D
     @2
