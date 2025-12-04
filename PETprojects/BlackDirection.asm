@@ -9,28 +9,57 @@ D = D + A
 @position
 M = D
 @prev_pos
-//KBD input
+
+//KBD input ==============================
 (KEY_INPUT)
+    @KEY_PRESS_W8
+    0;JMP
+(KEY_RELEASE)
     @KBD
     D = M
-    @132
+    @KEY_RELEASE
+    D;JNE // Still hold button
+
+    @KEY_INPUT
+    0;JMP
+
+(KEY_PRESS_W8) // Wait for press
+    @KBD
+    D = M
+    // Go right
+    @pressed
+    M = D
+    @132 
     D = D - A
     @GO_RIGHT
     D;JEQ
-    @KBD
+    // Go left
+    @pressed
     D = M
-    @BUTTON_PRESSED
-    D;JGT
-    @KEY_INPUT
-    0;JMP
-(BUTTON_PRESSED)
-    @KBD
-    D = M
-    @KEY_INPUT
+    @130 
+    D = D - A
+    @GO_LEFT
     D;JEQ
-    @BUTTON_PRESSED
-    0;JMP
- 
+    // Go up
+    @pressed
+    D = M
+    @131 
+    D = D - A
+    @GO_UP
+    D;JEQ
+    // Go down
+    @pressed
+    D = M
+    @133 
+    D = D - A
+    @GO_DOWN
+    D;JEQ
+
+    @KEY_PRESS_W8
+    0;JMP // not equal to arrows
+
+// DIRECTIONS =============================
+
 (GO_RIGHT) // ->
 //push y
     @position
@@ -60,35 +89,96 @@ M = D
     @BLACK_SQUARE
     0;JMP
 
-// (GO_LEFT) // <-
-// //push y
-//     @position
-//     D = M
-//     //Check first if its first line of screen
-//     @16896
-//     D = D - A
-//     @KEY_INPUT
-//     D;JLE
-//     //Don't keep pos
-//     @511
-//     D = A
-//     @position
-//     M = M - D
-// (KEEP)
-//     @position
-//     D = M
-//     @SP
-//     AM = M - 1
-//     M = D
-//     //push RET
-//     @RET
-//     D = A
-//     @SP
-//     AM = M - 1
-//     M = D
-//     @BLACK_SQUARE
-//     0;JMP
+(GO_LEFT) // <-
+//push y
+    @position
+    D = M
+    //Check first if its first line of screen
+    @16896
+    D = D - A
+    @KEEP
+    D;JLE
+    //Don't keep pos
+    @513
+    D = A
+    @position
+    M = M - D
+(KEEP)
+    @position
+    D = M
+    @SP
+    AM = M - 1
+    M = D
+    //push RET
+    @RET
+    D = A
+    @SP
+    AM = M - 1
+    M = D
+    @BLACK_SQUARE
+    0;JMP
 
+(GO_UP) // ^
+//push y
+    @position
+    D = M
+    //Check first if its first line of screen
+    @16896
+    D = D - A
+    @KEEP
+    D;JLE
+    //Don't keep pos
+    @1056
+    D = A
+    @position
+    M = M - D
+(KEEP)
+    @position
+    D = M
+    @SP
+    AM = M - 1
+    M = D
+    //push RET
+    @RET
+    D = A
+    @SP
+    AM = M - 1
+    M = D
+    @BLACK_SQUARE
+    0;JMP
+
+(GO_DOWN) // !^
+//push y
+    @position
+    D = M
+    //Check first if its first line of screen
+    @16896
+    D = D - A
+    @KEEP
+    D;JLE
+    //Don't keep pos
+    @32
+    D = A
+    @position
+    M = M + D
+(KEEP)
+    @position
+    D = M
+    @SP
+    AM = M - 1
+    M = D
+    //push RET
+    @RET
+    D = A
+    @SP
+    AM = M - 1
+    M = D
+    @BLACK_SQUARE
+    0;JMP
+
+
+
+// RETURN =============================
 
 (RET)
     @temp
@@ -132,8 +222,10 @@ M = D
     D = A
     @SP
     M = M + D
-    @KEY_INPUT
+    @KEY_RELEASE
     0;JMP
+
+//FUNCTIONS ============================
 
 // Print Black Square
 (BLACK_SQUARE)
