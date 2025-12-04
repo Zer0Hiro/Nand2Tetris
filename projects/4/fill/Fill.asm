@@ -9,3 +9,20 @@
 // the screen should be cleared.
 
 //// Replace this comment with your code.
+@SCREEN
+D = A
+@position
+M = D
+(IDLE)
+    @KBD
+    D = M
+    @IDLE
+    D;JEQ
+(LOOP)
+    @position
+    A = M
+    M = -1
+    @position
+    M = M + 1
+    @LOOP
+    0;JMP
