@@ -50,27 +50,22 @@ CHIP CPU {
     And(a=instruction[3], b=instruction[15], out=writeM);
 
     //Jump Logic
-    // j < 0
+    // j < 0 JLT
     And(a=instruction[2], b=ngout, out=jlt);
-    // j > 0
-    Not(in=ngout, out=negng);
-    And(a=instruction[0], b=negng, out=jgt);
-    // j == 0
+    // j = 0 JEQ
     And(a=instruction[1], b=zrout, out=jeq);
-    // j <= 0
-    Or(a=jlt, b=jeq, out=jle);
-    // j >= 0
-    Or(a=jgt, b=jeq, out=jge);
-    // j != 0
-    Not(in=zrout, out=negzr);
-    And(a=instruction[1], b=negzr, out=jne);
-    //Output of Jump
-    Or(a=jlt, b=jgt, out=j1);
-    Or(a=j1, b=jeq, out=j2);
-    Or(a=j2, b=jle, out=j3);
-    Or(a=j3, b=jge, out=j4);
-    Or(a=j4, b=jne, out=jumpOut);
-    And(a=jumpOut, b=instruction[15], out=lpc);
+    // JGT = !ng & !zr
+    Not(in=ngout, out=notng);
+    Not(in=zrout, out=notzr);
+    And(a=notng, b=notzr, out=position);
+    And(a=instruction[0], b=position, out=jgt);
+    
+    Or(a=jlt, b=jeq, out=j1);
+    Or(a=j1, b=jgt, out=jmp);
+
+    // C and jump
+    And(a=jmp, b=instruction[15], out=lpc);
+    
     //PC
     PC(in=Aregpc, load=lpc, inc=true, reset=reset, out[0..14]=pc);
 
