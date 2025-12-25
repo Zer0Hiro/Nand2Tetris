@@ -1,76 +1,58 @@
-SYMBOLS = {
-    "RO": 0,
-    "R1": 1,
-    "R2": 2,
-    "R3": 3,
-    "R4": 4,
-    "R5": 5,
-    "R6": 6,
-    "R7": 7,
-    "R8": 8,
-    "R9": 9,
-    "R10": 10,
-    "R11": 11,
-    "R12": 12,
-    "R13": 13,
-    "R14": 14,
-    "R15": 15,
-    "SCREEN": 16384,
-    "KBD": 2,
-    "SP": 0,
-    "LCL": 1,
-    "ARG": 2,
-    "THIS": 3,
-    "THAT": 4,
-}
-symbol_pos = 16
+#Init file
+def init(file):
+    return open(file, "r")
 
-destdict = { {"", "000"}, {"M", "001"}, {"D", "010"}, {"MD", "011"}, {"A", "100"}, {"AM", "101"}, {"AD", "110"}, {"ADM", "111"} }
-compdict = { {"0", "0101010"}, {"1", "0111111"}, {"-1", "0111010"}, {"D", "0001100"}, {"A", "0110000"}, {"M", "1110000"}, {"!D", "0001101"}, {"!A", "0110001"}, {"!M", "1110001"}, {"-D", "0001111"}, {"-A", "0110011"}, {"-M", "1110011"}, {"D+1", "0011111"}, {"A+1", "0110111"}, {"M+1", "1110111"}, {"D-1", "0001110"}, {"A-1", "0110010"}, {"M-1", "1110010"}, {"D+A", "0000010"}, {"D+M", "1000010"}, {"D-A", "0010011"}, {"D-M", "1010011"}, {"A-D", "0000111"}, {"M-D", "1000111"}, {"D&A", "0000000"}, {"D&M", "1000000"}, {"D|A", "0010101"}, {"D|M", "1010101"}, {"M+D", "1000010"}, {"M+A", "0000010"} };
-jmpdict = { {"", "000"}, {"JGT", "001"}, {"JEQ", "010"}, {"JGE", "011"}, {"JLT", "100"}, {"JNE", "101"}, {"JLE", "110"}, {"JMP", "111"} };
-
-
-
-
-def parser_parseNextLine(filename):
-    with open(filename, 'r') as file:    
-        for line in file:
-            print(line)
+#Parse each line of file
+def parseNextLine(filename):
+    line = filename.readline()
+    
+    if not line:
+        return None
+    return line
 
 #Get instruction type
-def parser_instructionType(line):
-    if line[0] == "/" or "":
-        parser_symbol()
-        return
-    elif line[0] == "@":
-        return line.strip("@")
-    elif line[0] == "(":
-        return line.strip("()")
-    elif line[0] == "D" or "M":
-        return C_INSTRUCTION
+def instructionType(line):
+    line = line.strip()
+    if len(line) == 0 or line[0] == "/":
+        return "COMMENT_OR_EMPTY"
+    elif line[0] == "@" and line[1].isdigit() == False:
+        return "A_INSTRUCTION"
+    elif line[0] == ("("):
+        return "L_INSTRUCTION"
+    elif line[0] in ("D","M","A"):
+        return "C_INSTRUCTION"
 
+    
 #Symbol Parser
-def parser_symbol(symbol):
-    if symbol not in SYMBOLS:
-        SYMBOLS[symbol] = symbol_pos
-        symbol_pos += 1
-        print(SYMBOLS) 
+def symbol(instruction,line):
+    line = line.strip()
+    if instruction == "A_INSTRUCTION":
+        return line.replace("@","")
+    elif instruction == "L_INSTRUCTION":
+        return line.strip().strip("()")
 
 #Dest Parser
-def parser_dest(str):
-    #FIX FOR 0;JMP
+def dest(str):
+    str = str.split("//")[0].strip()
+    str = str.replace(" ","")
+    if "=" not in str:
+        return ""
     return str.split("=")[0]
 
 #Comp parser
-def parser_comp(str):
+def comp(str):
+    str = str.split("//")[0].strip()
+    str = str.replace(" ","")
+    if "=" not in str:
+        return str.split(";")[0]
     return str.split("=")[1].split(";")[0]
 
 #Jump parser
-def parser_jump(str):
+def jump(str):
+    str = str.split("//")[0].strip()
+    if "=" not in str:
+        return str.split(";")[1]
+    elif ";" not in str:
+        return ""
     return str.split("=")[1].split(";")[1]
         
-
-
-def main():
-    file = "file.asm"
-    parser_parseNextLine(file)
