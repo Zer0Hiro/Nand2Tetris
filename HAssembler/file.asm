@@ -73,14 +73,14 @@ M = D
     //Check first if its first line of screen
     @16896
     D = D - A
-    @KEEP
+    @KEEP1
     D;JLE
     //Don't keep pos
     @511
     D = A
     @position
     M = M - D
-(KEEP)
+(KEEP1)
     @position
     D = M
     @SP
@@ -102,14 +102,14 @@ M = D
     //Check first if its first line of screen
     @16896
     D = D - A
-    @KEEP
+    @KEEP2
     D;JLE
     //Don't keep pos
     @513
     D = A
     @position
     M = M - D
-(KEEP)
+(KEEP2)
     @position
     D = M
     @SP
@@ -131,14 +131,14 @@ M = D
     //Check first if its first line of screen
     @16896
     D = D - A
-    @KEEP
+    @KEEP3
     D;JLE
     //Don't keep pos
     @1056
     D = A
     @position
     M = M - D
-(KEEP)
+(KEEP3)
     @position
     D = M
     @SP
@@ -160,14 +160,14 @@ M = D
     //Check first if its first line of screen
     @16896
     D = D - A
-    @KEEP
+    @KEEP4
     D;JLE
     //Don't keep pos
     @32
     D = A
     @position
     M = M + D
-(KEEP)
+(KEEP4)
     @position
     D = M
     @SP

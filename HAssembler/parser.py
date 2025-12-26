@@ -15,17 +15,17 @@ def instructionType(line):
     line = line.strip()
     if len(line) == 0 or line[0] == "/":
         return "COMMENT_OR_EMPTY"
-    elif line[0] == "@" and line[1].isdigit() == False:
+    elif line[0] == "@":
         return "A_INSTRUCTION"
     elif line[0] == ("("):
         return "L_INSTRUCTION"
-    elif line[0] in ("D","M","A"):
+    elif line[0] in ("D","M","A","0"):
         return "C_INSTRUCTION"
 
     
 #Symbol Parser
 def symbol(instruction,line):
-    line = line.strip()
+    line = line.split("//")[0].strip()
     if instruction == "A_INSTRUCTION":
         return line.replace("@","")
     elif instruction == "L_INSTRUCTION":

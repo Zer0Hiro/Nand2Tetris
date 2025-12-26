@@ -13,6 +13,7 @@ while True:
     if nextline == None:
         break
     instruction = parser.instructionType(nextline)
+    print(f"{nextline} : {instruction}")
     #Move pc
     if instruction != "COMMENT_OR_EMPTY":
         pc += 1
@@ -20,11 +21,12 @@ while True:
     if instruction == "L_INSTRUCTION":
         symbol = parser.symbol(instruction,nextline)
         if symbol in SymbolTable.SYMBOLS:
+            pc -= 1
             continue
         else:
             SymbolTable.addEntry(symbol,pc)
             pc -= 1
-
+        print(f"{symbol} = {SymbolTable.SYMBOLS[symbol]}")
 #SymbolTable.sym_print() Check if labels are in table
 
 #Second Pass
@@ -46,20 +48,27 @@ while True:
     
     if instruction == "A_INSTRUCTION":
         symbol = parser.symbol(instruction,nextline)
-        if symbol not in SymbolTable.SYMBOLS:
+        print(symbol)
+        #Check which symbol is that
+        if symbol not in SymbolTable.SYMBOLS and symbol[0].isdigit() == False:
             SymbolTable.addEntry(symbol,symbol_reg)
+            symbol_bin = format(symbol_reg,"016b")
             symbol_reg += 1
-        symbol_bin = format(symbol_reg-1,"016b")
-        print(symbol_bin) #REMOVE
+        elif symbol in SymbolTable.SYMBOLS:
+            symbol_bin = format(SymbolTable.SYMBOLS[symbol],"016b")
+        else:
+            symbol_bin = format(int(symbol),"016b")
+        print(symbol_bin)
         #output symbol
         output.write(f"{symbol_bin}\n")
+        
     if instruction == "C_INSTRUCTION":
         destination = parser.dest(nextline)
-        print(destination) #REMOVE
+        print(destination, end=" ") #DEBUGGER
         compute = parser.comp(nextline)
-        print(compute) #REMOVE
+        print(compute, end=" ") #DEBUGGER
         jumping = parser.jump(nextline)
-        print(jumping) #REMOVE
+        print(jumping) #DEBUGGER
         
         dest_bin = code.destin(destination)
         compute_bin = code.comp(compute)
