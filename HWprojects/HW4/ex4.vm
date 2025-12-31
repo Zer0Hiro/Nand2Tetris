@@ -1,0 +1,39 @@
+function ex4.SumOfSquares 0
+    push argument 0
+    push constant 1
+    eq
+    // if n != 1
+    if-goto	if_end
+    push argument 0
+    push argument 0
+    //START OF RECURSION
+    // if n == 1
+label if_end
+    push constant 1
+    return 
+
+function ex4.square 2
+    //save num as local for counter
+    push argument 0 
+    pop local 0 //counter
+label power_loop
+    push argument 0
+    push argument 0
+    add
+    pop local 1 //sum
+    // counter --
+    push local 0
+    push constant 1
+    sub
+    pop local 0
+    //if counter == 0
+    push local 0
+    push constant 0
+    eq 
+    if-goto	end_of_loop
+    // counter != 0
+    goto power_loop
+label end_of_loop
+    // return sum
+    push local 1
+    return
