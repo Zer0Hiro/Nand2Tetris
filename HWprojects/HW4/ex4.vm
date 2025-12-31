@@ -1,3 +1,10 @@
+function ex4.main 0
+    push static 0
+    call ex4.SumOfSquares 1
+    pop static 1
+label END
+    goto END
+
 function ex4.SumOfSquares 0
     push argument 0
     push constant 1
@@ -5,7 +12,16 @@ function ex4.SumOfSquares 0
     // if n != 1
     if-goto	if_end
     push argument 0
+    //square val
+    call ex4.square 1
+    // n - 1
     push argument 0
+    push constant 1
+    sub
+    call ex4.SumOfSquares 1
+    // n^2 + sumofsquares(n-1)
+    add
+    return
     //START OF RECURSION
     // if n == 1
 label if_end
@@ -18,10 +34,10 @@ function ex4.square 2
     pop local 0 //counter
 label power_loop
     push argument 0
-    push argument 0
+    push local 1
     add
     pop local 1 //sum
-    // counter --
+    // counter--
     push local 0
     push constant 1
     sub
